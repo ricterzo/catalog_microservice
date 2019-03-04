@@ -27,9 +27,9 @@ object Application extends App with RestInterface {
 
   implicit val executionContext: ExecutionContext = system.dispatcher
 
-  val userRepository: MovieRepository = new MongoCatalogRepository(system, mongodbUrl)
+  val movieRepository: MovieRepository = new MongoCatalogRepository(system, mongodbUrl)
 
-  val userActor: ActorRef = system.actorOf(MovieActor.props(userRepository))
+  val movieActor: ActorRef = system.actorOf(MovieActor.props(movieRepository))
 
   val route = userRoutes
 
