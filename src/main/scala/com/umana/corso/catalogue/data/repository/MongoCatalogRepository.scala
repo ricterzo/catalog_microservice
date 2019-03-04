@@ -1,5 +1,5 @@
 package com.umana.corso.catalogue.data.repository
-
+import org.mongodb.scala.model.Filters._
 import java.util.UUID
 
 import akka.actor.ActorSystem
@@ -28,6 +28,13 @@ class MongoCatalogRepository(system: ActorSystem, url: String) extends MovieRepo
 
   override def getMovieList(): Future[Seq[Movie]] = {
     collection.find()
+      .toFuture()
+      .map { documentList =>
+        documentList.map(mapToMovie)
+      }
+  }
+  override def getMovieListByTitle(titleToFind:String): Future[Seq[Movie]] = {
+    collection.find(regex(KEY_TITLE, titleToFind))
       .toFuture()
       .map { documentList =>
         documentList.map(mapToMovie)

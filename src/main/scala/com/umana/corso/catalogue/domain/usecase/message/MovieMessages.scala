@@ -13,6 +13,9 @@ object MovieMessages {
 
   case class GetMovieListResponse(result: Seq[Movie])
 
+  case class GetMovieListByTitle(title:String)
+
+  case class GetMovieListByTitleResponse(result: Seq[Movie])
   //endregion
 
 }

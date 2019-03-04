@@ -21,8 +21,8 @@ trait RestInterface extends JsonSupport {
   private implicit val timeout: Timeout = Timeout(5.seconds)
 
   lazy val userRoutes: Route = pathPrefix("catalog") {
+    pathPrefix("movie") {
     concat(
-      pathPrefix("movie") {
         pathEnd {
           get {
             val response = userActor ? GetMovieList()
@@ -31,11 +31,21 @@ trait RestInterface extends JsonSupport {
               case _ => complete(StatusCodes.InternalServerError)
             }
           }
-        }
+        },
+        path(Segment) {
+          title =>
+            // GET /catalog/$TITLE
+            get {
+              val response = userActor ? GetMovieListByTitle(title)
+              onSuccess(response) {
+                case GetMovieListByTitleResponse(movieList) => complete(StatusCodes.OK, movieList)
+                case _ => complete(StatusCodes.InternalServerError)
+              }
+            }
+
       }
-
     )
-
+  }
   }
   }
 

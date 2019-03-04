@@ -31,7 +31,12 @@ class MovieActor(movieRepository: MovieRepository) extends Actor {
       movieRepository.getMovieList()
         .map(movieList => GetMovieListResponse(movieList))
         .pipeTo(sender())
-  }
+
+  case GetMovieListByTitle(title:String) =>
+  movieRepository.getMovieListByTitle(title)
+    .map(movieList => GetMovieListByTitleResponse(movieList))
+    .pipeTo(sender())
+}
 }
 
 object MovieActor {

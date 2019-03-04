@@ -10,4 +10,6 @@ trait MovieRepository {
 
   def getMovieList(): Future[Seq[Movie]]
 
+  def getMovieListByTitle(title:String): Future[Seq[Movie]]
+
 }
